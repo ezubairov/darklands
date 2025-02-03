@@ -1,11 +1,12 @@
 use bevy::prelude::*;
 
-mod camera;
 mod components;
 mod map;
 mod render;
+mod spawner;
 mod states;
 mod utils;
+mod ui;
 
 mod prelude {
     pub use bevy::prelude::*;
@@ -14,8 +15,10 @@ mod prelude {
     pub use crate::components::*;
     pub use crate::map::*;
     pub use crate::states::*;
+    pub use crate::ui::*;
     pub use crate::utils::*;
     pub use rand::Rng;
+    pub use bracket_bevy::prelude::*;
 }
 
 use prelude::*;
@@ -39,7 +42,7 @@ fn main() {
         )
         .add_plugins(render::plugin)
         .init_state::<RunState>()
-        // .add_systems(Startup, camera::setup)
         .add_plugins(MapPlugin)
+        .add_plugins(UIPlugin)
         .run();
 }

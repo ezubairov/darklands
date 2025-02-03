@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use bracket_bevy::prelude::*;
 use bracket_lib::prelude::Rect;
 use bracket_lib::terminal::RGB;
 
@@ -13,6 +12,7 @@ pub struct MapBuilder {
     pub map: Map,
     walls: Vec<Rect>,
     rooms: Vec<Rect>,
+    pub player_start: Position,
 }
 impl MapBuilder {
     fn new() -> Self {
@@ -20,11 +20,13 @@ impl MapBuilder {
             map: Map::new(),
             walls: Vec::new(),
             rooms: Vec::new(),
+            player_start: Position::new(0, 0),
         };
 
         mb.fill(TileType::Void);
         mb.build_random_rooms();
         mb.build_corridors();
+        mb.player_start = Position::from(mb.rooms[0].center());
 
         mb
     }
@@ -78,16 +80,16 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for x in min(x1, x2)..=max(x1, x2) {
             if let Some(idx) = self.map.try_idx(Position { x, y }) {
-                self.map.tiles[idx as usize] = TileType::Floor;
+                self.map.tiles[idx] = TileType::Floor;
             }
             if let Some(idx) = self.map.try_idx(Position { x, y: y - 1 }) {
-                if self.map.tiles[idx as usize] == TileType::Void {
-                    self.map.tiles[idx as usize] = TileType::Wall;
+                if self.map.tiles[idx] == TileType::Void {
+                    self.map.tiles[idx] = TileType::Wall;
                 }
             }
             if let Some(idx) = self.map.try_idx(Position { x, y: y + 1 }) {
-                if self.map.tiles[idx as usize] == TileType::Void {
-                    self.map.tiles[idx as usize] = TileType::Wall;
+                if self.map.tiles[idx] == TileType::Void {
+                    self.map.tiles[idx] = TileType::Wall;
                 }
             }
         }
@@ -97,16 +99,16 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for y in min(y1, y2)..=max(y1, y2) {
             if let Some(idx) = self.map.try_idx(Position { x, y }) {
-                self.map.tiles[idx as usize] = TileType::Floor;
+                self.map.tiles[idx] = TileType::Floor;
             }
             if let Some(idx) = self.map.try_idx(Position { x: x - 1, y }) {
-                if self.map.tiles[idx as usize] == TileType::Void {
-                    self.map.tiles[idx as usize] = TileType::Wall;
+                if self.map.tiles[idx] == TileType::Void {
+                    self.map.tiles[idx] = TileType::Wall;
                 }
             }
             if let Some(idx) = self.map.try_idx(Position { x: x + 1, y }) {
-                if self.map.tiles[idx as usize] == TileType::Void {
-                    self.map.tiles[idx as usize] = TileType::Wall;
+                if self.map.tiles[idx] == TileType::Void {
+                    self.map.tiles[idx] = TileType::Wall;
                 }
             }
         }
@@ -167,6 +169,6 @@ pub struct MapPlugin;
 impl Plugin for MapPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(MapBuilder::new())
-            .add_systems(Startup, draw_map);
+            .add_systems(OnEnter(RunState::MapGeneration), draw_map);
     }
 }
