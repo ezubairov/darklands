@@ -2,8 +2,16 @@ use bevy::prelude::*;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash, States, Default)]
 pub enum RunState {
-    MainMenuScreen,
     #[default]
+    MainMenuScreen,
+    OptionsScreen,
+    GameLoop,
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash, States, Default)]
+pub enum GameLoopState {
+    #[default]
+    NotHere,
     MapGeneration,
-    AwaitingInput,
+    PlayerTurn,
 }

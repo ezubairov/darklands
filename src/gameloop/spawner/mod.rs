@@ -23,6 +23,6 @@ pub fn spawn(mut commands: Commands, mb: Res<MapBuilder>) {
 pub struct SpawnerPlugin;
 impl Plugin for SpawnerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnExit(RunState::MapGeneration), spawn);
+        app.add_systems(OnExit(GameLoopState::MapGeneration), spawn);
     }
 }

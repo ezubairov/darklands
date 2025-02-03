@@ -134,7 +134,11 @@ impl MapBuilder {
     }
 }
 
-fn draw_map(mut commands: Commands, mb: Res<MapBuilder>, mut state: ResMut<NextState<RunState>>) {
+fn draw_map(
+    mut commands: Commands,
+    mb: Res<MapBuilder>,
+    mut state: ResMut<NextState<GameLoopState>>,
+) {
     for y in 0..SCREEN_HEIGHT {
         for x in 0..SCREEN_WIDTH {
             let idx = map_idx(x, y);
@@ -164,13 +168,13 @@ fn draw_map(mut commands: Commands, mb: Res<MapBuilder>, mut state: ResMut<NextS
         }
     }
 
-    state.set(RunState::AwaitingInput)
+    state.set(GameLoopState::PlayerTurn)
 }
 
 pub struct MapPlugin;
 impl Plugin for MapPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(MapBuilder::new())
-            .add_systems(OnEnter(RunState::MapGeneration), draw_map);
+            .add_systems(OnEnter(GameLoopState::MapGeneration), draw_map);
     }
 }
