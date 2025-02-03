@@ -134,7 +134,7 @@ impl MapBuilder {
     }
 }
 
-fn draw_map(mut commands: Commands, mb: Res<MapBuilder>) {
+fn draw_map(mut commands: Commands, mb: Res<MapBuilder>, mut state: ResMut<NextState<RunState>>) {
     for y in 0..SCREEN_HEIGHT {
         for x in 0..SCREEN_WIDTH {
             let idx = map_idx(x, y);
@@ -163,6 +163,8 @@ fn draw_map(mut commands: Commands, mb: Res<MapBuilder>) {
             }
         }
     }
+
+    state.set(RunState::AwaitingInput)
 }
 
 pub struct MapPlugin;

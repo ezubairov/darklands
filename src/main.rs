@@ -15,6 +15,7 @@ mod prelude {
     pub use crate::components::*;
     pub use crate::map::*;
     pub use crate::states::*;
+    pub use crate::spawner::*;
     pub use crate::ui::*;
     pub use crate::utils::*;
     pub use rand::Rng;
@@ -44,5 +45,6 @@ fn main() {
         .init_state::<RunState>()
         .add_plugins(MapPlugin)
         .add_plugins(UIPlugin)
+        .add_plugins(SpawnerPlugin)
         .run();
 }

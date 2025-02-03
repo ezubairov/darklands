@@ -7,10 +7,10 @@ pub fn plugin(app: &mut App) {
         .add_systems(Update, render.run_if(not(in_state(RunState::MainMenuScreen))));
 }
 
-fn render(ctx: Res<BracketContext>, non_player: Query<(&Position, &Renderable)>) {
+fn render(ctx: Res<BracketContext>, renderables: Query<(&Position, &Renderable)>) {
     ctx.cls();
 
-    non_player.iter().for_each(|(pos, render)| {
+    renderables.iter().for_each(|(pos, render)| {
         ctx.set(pos.x, pos.y, render.fg, render.bg, render.glyph);
     });
 }
