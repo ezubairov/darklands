@@ -9,6 +9,8 @@ pub enum TileType {
     Void,
 }
 
+const PASSABLE_TILE_TYPES: [TileType; 1] = [TileType::Floor];
+
 #[derive(Debug)]
 pub struct Map {
     pub tiles: Vec<TileType>,
@@ -29,6 +31,12 @@ impl Map {
             && position.x < SCREEN_WIDTH
             && position.y >= 0
             && position.y < SCREEN_HEIGHT
+    }
+
+    pub fn tile_passable<T: Into<Position>>(&self, position: T) -> bool {
+        let position = position.into();
+        self.in_bounds(position)
+            && (PASSABLE_TILE_TYPES.contains(&self.tiles[map_idx(position.x, position.y)]))
     }
 
     pub fn try_idx(&self, position: Position) -> Option<usize> {
