@@ -3,6 +3,8 @@ pub mod map;
 pub use map::*;
 pub mod spawner;
 pub use spawner::*;
+pub mod player;
+pub use player::*;
 
 use bevy::{app::PluginGroupBuilder, prelude::*};
 
@@ -24,5 +26,6 @@ impl PluginGroup for GameloopPluginGroup {
             .add(GameloopOrchestratorPlugin)
             .add(MapPlugin)
             .add(SpawnerPlugin)
+            .add(PlayerPlugin)
     }
 }
